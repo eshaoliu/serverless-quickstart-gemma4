@@ -1,3 +1,11 @@
+# RunPod Serverless handler runtime
 runpod
 requests
-runpod-flash
+
+# Inference stack (versions matching vLLM 0.11.2 metadata)
+vllm==0.11.2
+torch==2.9.0
+torchaudio==2.9.0
+torchvision==0.24.0
+transformers==4.56.0
+accelerate>=1.0.0

@@ -1,39 +1,40 @@
-# Use vLLM as the inference engine.
-FROM vllm/vllm-openai:latest
+# RunPod Serverless Dockerfile for Gemma 4 31B inference via vLLM
+# Build context must include handler.py and requirements.txt
 
-USER root
-
-# Force Docker to rebuild this layer whenever the GitHub repo has a new commit.
-ADD https://api.github.com/repos/eshaoliu/serverless-quickstart/commits?sha=main&per_page=1 /tmp/latest-commit.json
+FROM nvidia/cuda:12.8.1-devel-ubuntu22.04
 
 WORKDIR /app
 
-# Install Python dependencies.
-# --ignore-installed avoids conflicts with Debian-managed packages (e.g. cryptography).
-COPY requirements.txt .
-RUN python3 -m pip install --no-cache-dir --break-system-packages --ignore-installed -r requirements.txt
+# Install system Python and git (needed by Hugging Face transformers)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the RunPod handler
-COPY handler.py .
+# Upgrade pip/wheel to avoid resolver issues
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Build-time verification (non-fatal): confirm handler contains vLLM markers.
-RUN grep -E "vllm|VLLM_PORT" /app/handler.py && \
-    echo "handler.py is vLLM version" || \
-    echo "WARNING: handler.py vLLM marker not found"
+# Install the CUDA 12.8 variant of PyTorch first so vLLM links against
+# libcudart.so.12 instead of libcudart.so.13.
+RUN pip install --no-cache-dir \
+    torch==2.9.0 \
+    torchvision==0.24.0 \
+    torchaudio==2.9.0 \
+    --index-url https://download.pytorch.org/whl/cu128
 
-# Use the RunPod cached model instead of baking weights into the image.
+# Install remaining Python dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy handler
+COPY handler.py /app/handler.py
+
 ENV PYTHONUNBUFFERED=1
-ENV MODEL_NAME=HauhauCS/Gemma4-31B-QAT-Uncensored-HauhauCS-Balanced-MTP
-ENV MODEL_FILE=""
-ENV VLLM_PORT=8000
-ENV TENSOR_PARALLEL_SIZE=1
-ENV TRUST_REMOTE_CODE=true
-ENV GPU_MEMORY_UTILIZATION=0.95
-ENV MAX_MODEL_LEN=32768
+ENV MODEL_NAME=dealignai/Gemma-4-31B-JANG_4M-CRACK
+ENV GPU_MEMORY_UTILIZATION=0.90
+ENV MAX_MODEL_LEN=8192
 ENV MAX_NUM_SEQS=128
-# NOTE: set HF_TOKEN via RunPod endpoint env vars if the model is gated.
 
-# Clear any inherited ENTRYPOINT so CMD is interpreted as a plain command.
-ENTRYPOINT []
-
-CMD ["python3", "-u", "handler.py"]
+CMD ["python3", "-u", "/app/handler.py"]

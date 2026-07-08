@@ -14,7 +14,7 @@ import runpod
 MODEL_PATH = os.environ.get("MODEL_PATH", "")
 MODEL_NAME = os.environ.get(
     "MODEL_NAME",
-    "DreamFast/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Safetensor-Benchmark",
+    "dealignai/Gemma-4-31B-JANG_4M-CRACK",
 )
 MODEL_FILE = os.environ.get("MODEL_FILE", "")
 HF_CACHE_ROOT = "/runpod-volume/huggingface-cache/hub"
