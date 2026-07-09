@@ -249,7 +249,7 @@ def _start_vllm():
         "--quantization",
         "compressed-tensors",
         "--limit-mm-per-prompt",
-        "image=0,audio=0",
+        '{"image": 0, "audio": 0}',
     ]
     if TRUST_REMOTE_CODE:
         cmd.append("--trust-remote-code")
