@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY handler.py /app/handler.py
 
 ENV PYTHONUNBUFFERED=1
-ENV MODEL_NAME=dealignai/Gemma-4-31B-JANG_4M-CRACK
+ENV MODEL_NAME=cyankiwi/gemma-4-31B-it-AWQ-4bit
 ENV GPU_MEMORY_UTILIZATION=0.90
 ENV MAX_MODEL_LEN=8192
 ENV MAX_NUM_SEQS=128

@@ -14,7 +14,7 @@ import runpod
 MODEL_PATH = os.environ.get("MODEL_PATH", "")
 MODEL_NAME = os.environ.get(
     "MODEL_NAME",
-    "dealignai/Gemma-4-31B-JANG_4M-CRACK",
+    "cyankiwi/gemma-4-31B-it-AWQ-4bit",
 )
 MODEL_FILE = os.environ.get("MODEL_FILE", "")
 HF_CACHE_ROOT = "/runpod-volume/huggingface-cache/hub"
@@ -246,6 +246,10 @@ def _start_vllm():
         str(MAX_MODEL_LEN),
         "--max-num-seqs",
         str(MAX_NUM_SEQS),
+        "--quantization",
+        "compressed-tensors",
+        "--limit-mm-per-prompt",
+        "image=0,audio=0",
     ]
     if TRUST_REMOTE_CODE:
         cmd.append("--trust-remote-code")
