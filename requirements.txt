@@ -2,11 +2,6 @@
 runpod
 requests
 
-# Inference stack for Gemma 4 support
-# vLLM 0.24.0 added native Gemma 4 support and requires Transformers >= 5.5.3.
-vllm==0.24.0
-torch==2.11.0
-torchaudio==2.11.0
-torchvision==0.26.0
-transformers>=5.5.3
-accelerate>=1.0.0
+# vLLM is provided by the base Docker image (vllm/vllm-openai:gemma4-cu130).
+# For local development outside Docker, install vLLM separately, e.g.:
+#   pip install vllm transformers accelerate
