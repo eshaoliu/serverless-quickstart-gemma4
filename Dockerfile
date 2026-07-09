@@ -16,13 +16,13 @@ RUN apt-get update \
 # Upgrade pip/wheel to avoid resolver issues
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Install the CUDA 12.8 variant of PyTorch first so vLLM links against
-# libcudart.so.12 instead of libcudart.so.13.
+# Install the CUDA 12.9 variant of PyTorch first so vLLM 0.24.0 links against
+# the correct CUDA runtime while still using libcudart.so.12.
 RUN pip install --no-cache-dir \
-    torch==2.9.0 \
-    torchvision==0.24.0 \
-    torchaudio==2.9.0 \
-    --index-url https://download.pytorch.org/whl/cu128
+    torch==2.11.0 \
+    torchvision==0.26.0 \
+    torchaudio==2.11.0 \
+    --index-url https://download.pytorch.org/whl/cu129
 
 # Install remaining Python dependencies
 COPY requirements.txt /app/requirements.txt

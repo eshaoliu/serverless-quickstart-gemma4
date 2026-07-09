@@ -2,10 +2,11 @@
 runpod
 requests
 
-# Inference stack (versions matching vLLM 0.11.2 metadata)
-vllm==0.11.2
-torch==2.9.0
-torchaudio==2.9.0
-torchvision==0.24.0
-transformers==4.56.0
+# Inference stack for Gemma 4 support
+# vLLM 0.24.0 added native Gemma 4 support and requires Transformers >= 5.5.3.
+vllm==0.24.0
+torch==2.11.0
+torchaudio==2.11.0
+torchvision==0.26.0
+transformers>=5.5.3
 accelerate>=1.0.0
