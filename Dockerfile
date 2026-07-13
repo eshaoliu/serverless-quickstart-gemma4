@@ -19,4 +19,6 @@ ENV GPU_MEMORY_UTILIZATION=0.90
 ENV MAX_MODEL_LEN=8192
 ENV MAX_NUM_SEQS=128
 
+# Override the base image's vLLM entrypoint so CMD is executed as-is.
+ENTRYPOINT []
 CMD ["python3", "-u", "/app/handler.py"]
