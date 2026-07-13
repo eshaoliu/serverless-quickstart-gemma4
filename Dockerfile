@@ -3,7 +3,7 @@
 # compressed-tensors / AWQ fixes for Gemma 4 quantized checkpoints.
 # Build context must include handler.py.
 
-FROM vllm/vllm-openai:gemma4-cu130
+FROM vllm/vllm-openai:latest
 
 WORKDIR /app
 
