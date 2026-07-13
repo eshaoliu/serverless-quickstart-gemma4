@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir runpod requests
 COPY handler.py /app/handler.py
 
 ENV PYTHONUNBUFFERED=1
-ENV MODEL_NAME=cyankiwi/gemma-4-31B-it-AWQ-4bit
+ENV MODEL_NAME=sophosympatheia/Glistening-Gem-31B-v1.0
 ENV GPU_MEMORY_UTILIZATION=0.90
 ENV MAX_MODEL_LEN=8192
 ENV MAX_NUM_SEQS=128

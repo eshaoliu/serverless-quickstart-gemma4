@@ -14,7 +14,7 @@ import runpod
 MODEL_PATH = os.environ.get("MODEL_PATH", "")
 MODEL_NAME = os.environ.get(
     "MODEL_NAME",
-    "cyankiwi/gemma-4-31B-it-AWQ-4bit",
+    "sophosympatheia/Glistening-Gem-31B-v1.0",
 )
 MODEL_FILE = os.environ.get("MODEL_FILE", "")
 HF_CACHE_ROOT = "/runpod-volume/huggingface-cache/hub"
@@ -250,8 +250,6 @@ def _start_vllm():
         "bfloat16",
         "--kv-cache-dtype",
         "auto",
-        "--quantization",
-        "compressed-tensors",
         "--limit-mm-per-prompt",
         '{"image": 0, "audio": 0}',
     ]
