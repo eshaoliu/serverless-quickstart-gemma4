@@ -20,6 +20,38 @@ RunPod Serverless template for Gemma 4 31B (or any vLLM-compatible model).
 
 4. Create a RunPod Serverless endpoint using the pushed image.
 
+## Image input
+
+`handler.py` supports OpenAI-style multimodal chat requests. Make sure `MODEL_NAME` points to a vision-capable checkpoint (for example a Gemma 4 IT model). By default the vLLM server allows one image per prompt; change `LIMIT_MM_PER_PROMPT` if you need more.
+
+Example payload (`test_input_image.json`):
+
+```json
+{
+    "input": {
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Describe this image in one sentence."},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+                        }
+                    }
+                ]
+            }
+        ],
+        "temperature": 0.7,
+        "max_tokens": 256
+    }
+}
+```
+
+`image_url.url` can also be an `https://` URL to a publicly accessible image.
+
 ## Flash Deploy (alternative to Docker)
 
 `flash_app.py` deploys `dealignai/Gemma-4-31B-JANG_4M-CRACK` via [RunPod Flash](https://docs.runpod.io/flash/quickstart) without building a Docker image.
@@ -48,4 +80,5 @@ The first run provisions a GPU worker, installs `vllm/transformers/torch`, downl
 - `benchmark.py` — concurrent benchmark / load test for the endpoint.
 - `flash_app.py` — RunPod Flash script for `dealignai/Gemma-4-31B-JANG_4M-CRACK`.
 - `requirements.txt` — Python dependencies.
-- `test_input.json` — sample RunPod request payload.
+- `test_input.json` — sample text-only RunPod request payload.
+- `test_input_image.json` — sample multimodal RunPod request payload with an image.

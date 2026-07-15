@@ -1,0 +1,21 @@
+{
+    "input": {
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Describe this image in one sentence."},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+                        }
+                    }
+                ]
+            }
+        ],
+        "temperature": 0.7,
+        "max_tokens": 256
+    }
+}

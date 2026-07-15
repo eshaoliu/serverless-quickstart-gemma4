@@ -26,6 +26,7 @@ TRUST_REMOTE_CODE = os.environ.get("TRUST_REMOTE_CODE", "true").lower() in ("1",
 GPU_MEMORY_UTILIZATION = float(os.environ.get("GPU_MEMORY_UTILIZATION", "0.95"))
 MAX_MODEL_LEN = int(os.environ.get("MAX_MODEL_LEN", "32768"))
 MAX_NUM_SEQS = int(os.environ.get("MAX_NUM_SEQS", "128"))
+LIMIT_MM_PER_PROMPT = os.environ.get("LIMIT_MM_PER_PROMPT", '{"image": 1, "audio": 0}')
 
 _vllm_process = None
 _model_ready = False
@@ -35,7 +36,7 @@ print(
     f"MODEL_PATH={MODEL_PATH!r} MODEL_NAME={MODEL_NAME!r} "
     f"MODEL_FILE={MODEL_FILE!r} VLLM_PORT={VLLM_PORT} "
     f"GPU_MEMORY_UTILIZATION={GPU_MEMORY_UTILIZATION} MAX_MODEL_LEN={MAX_MODEL_LEN} "
-    f"MAX_NUM_SEQS={MAX_NUM_SEQS}",
+    f"MAX_NUM_SEQS={MAX_NUM_SEQS} LIMIT_MM_PER_PROMPT={LIMIT_MM_PER_PROMPT!r}",
     flush=True,
 )
 
@@ -222,7 +223,8 @@ def _start_vllm():
         f"vLLM options: port={VLLM_PORT}, tp={TENSOR_PARALLEL_SIZE}, "
         f"trust_remote_code={TRUST_REMOTE_CODE}, "
         f"gpu_memory_utilization={GPU_MEMORY_UTILIZATION}, "
-        f"max_model_len={MAX_MODEL_LEN}, max_num_seqs={MAX_NUM_SEQS}",
+        f"max_model_len={MAX_MODEL_LEN}, max_num_seqs={MAX_NUM_SEQS}, "
+        f"limit_mm_per_prompt={LIMIT_MM_PER_PROMPT}",
         flush=True,
     )
 
@@ -251,7 +253,7 @@ def _start_vllm():
         "--kv-cache-dtype",
         "auto",
         "--limit-mm-per-prompt",
-        '{"image": 0, "audio": 0}',
+        LIMIT_MM_PER_PROMPT,
     ]
     if TRUST_REMOTE_CODE:
         cmd.append("--trust-remote-code")
